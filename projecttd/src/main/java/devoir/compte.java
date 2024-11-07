@@ -116,6 +116,16 @@ public String toJson() {
             .create();
     return gson.toJson(this);
 }
+  public transaction recherche_transaction_parref(String ref) {
+    for (transaction cl : liste) {
+        if (cl.getReference() == ref) {
+            System.out.println("la transaction est bien trouve " + cl);
+            return cl;
+        }
+    }
+    return null;
+   
+}
 
 
 }
