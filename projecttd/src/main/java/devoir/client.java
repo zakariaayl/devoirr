@@ -20,8 +20,8 @@ client(int num,String nom,String pre,String adresse,String email,String phone){
 	  this.phone=phone;
 	  this.adresse=adresse;
   }
-@Expose
-  @JsonManagedReference 
+@Expose//pour gestion de conversion gson
+  @JsonManagedReference //gestion des cardinalite
   List<compte> liste=new ArrayList<>();
   public String getNom() {
       return nom;
@@ -65,7 +65,7 @@ client(int num,String nom,String pre,String adresse,String email,String phone){
           }
           
       }
-	  com.getbanque().crea_compte(com);
+	  com.getbanque().crea_compte(com);//l'ajout du compte dans la liste de banque
 	  liste.add(com);
 	  System.out.println("compte cree avec succes");
    }
@@ -82,7 +82,7 @@ client(int num,String nom,String pre,String adresse,String email,String phone){
 	        System.out.println("compte n'existe pas");
 	        return 0;
 	    }
-	    return 1;//j'ai met pour la tester
+	    return 1;//le return ici est pour l'utiliser dans le teste
 	
       }
    public String toJson() {
