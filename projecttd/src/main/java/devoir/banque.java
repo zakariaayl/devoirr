@@ -31,13 +31,13 @@ public class banque {
        this.listc = listc;
    }
    @Override
-   public boolean equals(Object o) {
+   public boolean equals(Object o) {//comparaison par les ids
 	   if(this == o) return true;
 	   if(o == null || o.getClass()==this.getClass()) return false;
 	   banque b=(banque)o;
 	   return b.getId() ==this.getId();
 	   }
-   public void crea_compte(compte com) {
+   public void crea_compte(compte com) {//cette methode est appele quand on cree le compte dans e clients
 		  listc.add(com);
 		  System.out.println("compte cree avec succes dans la banque");
 	   
