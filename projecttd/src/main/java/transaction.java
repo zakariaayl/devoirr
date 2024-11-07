@@ -1,42 +1,63 @@
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class transaction {
+
   public enum  type{
 	  VIRIN,
 	  VIREST,
 	  VIRCKA,
-	  VIRMULTA
+	  VIRMULTA,
+	  VIRCHAK
   }
+	@Expose
   private type trans_type;
+	@Expose
   private Date timestamp;
+	@Expose
   private String reference;
-  @JsonManagedReference
+	@Expose
+  private boolean ischeck;
+	@Expose
   compte com1;
-  compte com2;
-  public transaction( String reference, compte c1,compte c2) {
-      if(c1.getbanque().equals(c2.getbanque()) && c1.getpays().equals(c2.getpays())) {
-    	   this.trans_type=type.VIRIN;//meme banque meme pays
-      }
-      if(!(c1.getbanque().equals(c2.getbanque())) && c1.getpays().equals(c2.getpays())) {
-   	   this.trans_type=type.VIREST; //meme pays different banque
-     }
-      if(!(c1.getDevise().equals(c2.getDevise()))) {
-    	  this.trans_type=type.VIRMULTA;//different devise 
+
+  @JsonManagedReference
+ 
+  List<compte> list;
+  public transaction( String reference, compte c1,List<compte> comptes,boolean ischeck ) {
+	  this.trans_type=type.VIREST;
+	  if(ischeck) {
+		  this.ischeck=ischeck;
+		  this.trans_type=type.VIRCHAK;
+	  }
+	  
+      if(comptes.size()!=1) this.trans_type=type.VIRMULTA;
+      else {
+    	  if(c1.getbanque().getId() == comptes.get(0).getbanque().getId() && c1.getbanque().getPays().equals(comptes.get(0).getbanque().getPays())) {
+    		  this.trans_type=type.VIRIN;
+    	  }
+    	  if(!c1.getDevise().equals(comptes.get(0).getDevise())) {
+    		  this.trans_type=type.VIRCKA;
+    	  }
+    	  
       }
       
       this.timestamp = new Date();
       this.reference = reference;
       this.com1 = c1;
-      this.com2 = c2;
+     this.list=new ArrayList<>();
+     this.ischeck=ischeck;
   }
   public type getType() {
       return trans_type;
   }
-
+ 
   public Date getTime() {
       return timestamp;
   }
@@ -44,11 +65,8 @@ public class transaction {
   public String getReference() {
       return reference;
   }
-  public List<compte> getcompte() {
-	  List<compte> l=new ArrayList<>();
-	  l.add(com1);
-	  l.add(com2);
-	  return l;
+  public List<compte> getcomptes() {
+	 return this.list;
   }
  
 
@@ -65,9 +83,9 @@ public class transaction {
       this.reference = reference;
   }
 
-  public void setComptes(compte compte1,compte compte2) {
+  public void setComptes(compte compte1,List<compte> comptes) {
       this.com1 = compte1;
-      this.com1 = compte1;
+      this.list = comptes;
   }
   @Override
   public String toString() {
@@ -76,7 +94,17 @@ public class transaction {
               ", time=" + timestamp +
               ", reference='" + reference + '\'' +
               ", compte1=" + com1 +","+
-              " compte2=" + com2+
+              " compte2=" + list+
+    
               '}';
   }
+  public String toJson() {
+      Gson gson = new GsonBuilder()
+              .setPrettyPrinting()
+              .excludeFieldsWithoutExposeAnnotation()
+              .create();
+      return gson.toJson(this);
+  }
+
+ 
 }

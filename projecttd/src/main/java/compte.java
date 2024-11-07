@@ -1,33 +1,43 @@
 import java.util.ArrayList;
+import com.google.gson.annotations.Expose;
 
 import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 public class compte {
+	@Expose
    int num_com;
+	@Expose
    Date creat;
+	@Expose
    Date update;
+	@Expose
    String devise;
-   String banque;//pour gestion de type
-   String pays;//aussi pour gestion de type ,on peut gerer les pays a partir de devise mais il existe des pays de meme devise
+   @Expose
+   client cl;
+   
    @JsonManagedReference
    List<transaction> liste=new ArrayList<transaction>();
-   public compte(int numCom,String pays,String banque, String devise) {
+   @Expose
+   banque banque;
+   public compte(int numCom,String pays,banque b, String devise) {
        this.num_com = numCom;
        this.devise = devise;
        this.creat = new Date(); 
        this.update = new Date();
-       this.pays=pays;
-       this.banque=banque;
+       this.banque=b;
    }
-   public String getbanque() {
-       return banque;
-   }
-   public String getpays() {
-       return pays;
+   public banque getbanque() {
+	   return banque; 
    }
    
+   public void setbanque(banque b) {
+	   this.banque=b; 
+   }
+  
    public int getNumCom() {
        return num_com;
    }
@@ -48,12 +58,6 @@ public class compte {
    public void setNumCom(int numCom) {
        this.num_com = numCom;
    }
-   public void setbanque(String banque) {
-       this.banque=banque;
-   }
-   public void setpays(String pays) {
-       this.pays=pays;
-   }
    public void setCreationDate(Date creationDate) {
        this.creat = creationDate;
    }
@@ -65,7 +69,7 @@ public class compte {
    public void setDevise(String devise) {
        this.devise = devise;
    }
-   public void recherche_trans(transaction t1) {
+   public int recherche_trans(transaction t1) {
 	    boolean trouve = false;
 	    for (transaction tm : liste) {
 	        if (t1.getReference().equals(tm.getReference())) {
@@ -76,7 +80,9 @@ public class compte {
 	    }
 	    if (!trouve) {
 	        System.out.println("transaction non trouve");
+	        return 0;//non trouve
 	    }
+	    return 1;//trouve
 	}
    @Override
    public String toString() {
@@ -85,7 +91,7 @@ public class compte {
                ", creat=" + creat +
                ", up=" + update +
                ", devise=" + devise +
-               ", transactions=" + liste +
+               
                '}';
    }
 public void ajoutTrans(transaction tr1) {
@@ -102,4 +108,13 @@ public void ajoutTrans(transaction tr1) {
 public List<transaction> getListe() {
 	return liste;
 }
+public String toJson() {
+    Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .excludeFieldsWithoutExposeAnnotation()
+            .create();
+    return gson.toJson(this);
+}
+
+
 }

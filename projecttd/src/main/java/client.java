@@ -3,9 +3,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 public class client {
+@Expose
   String nom,prenom,adresse,phone,email;
+@Expose
   int numcli;
 client(int num,String nom,String pre,String adresse,String email,String phone){
 	  this.numcli=num;
@@ -15,6 +19,7 @@ client(int num,String nom,String pre,String adresse,String email,String phone){
 	  this.phone=phone;
 	  this.adresse=adresse;
   }
+@Expose
   @JsonManagedReference 
   List<compte> liste=new ArrayList<>();
   public String getNom() {
@@ -57,13 +62,13 @@ client(int num,String nom,String pre,String adresse,String email,String phone){
              System.out.println("compte deja existe");
              return;
           }
-        	  
           
       }
+	  com.getbanque().crea_compte(com);
 	  liste.add(com);
 	  System.out.println("compte cree avec succes");
    }
-   public void recherche_comp(compte com) {
+   public int recherche_comp(compte com) {
 	    boolean existe = false;
 	    for (compte c1 : liste) {
 	        if (c1.getNumCom() == com.getNumCom()) {
@@ -74,8 +79,17 @@ client(int num,String nom,String pre,String adresse,String email,String phone){
 	    }
 	    if (!existe) {
 	        System.out.println("compte n'existe pas");
+	        return 0;
 	    }
+	    return 1;//j'ai met pour la tester
 	
       }
+   public String toJson() {
+       Gson gson = new GsonBuilder()
+               .setPrettyPrinting()
+               .excludeFieldsWithoutExposeAnnotation()
+               .create();
+       return gson.toJson(this);
+   }
 	  
 }

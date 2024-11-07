@@ -1,61 +1,68 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class maine {
+    public static void main(String[] args) {
+        // Create a bank
+        List<compte> comptesList = new ArrayList<>();
+        banque myBank = new banque(1, "France", comptesList);
 
-	public static void main(String[] args) {
-		
-		compte account1 = new compte(101, "Bank A", "Country A", "USD");
-        compte account2 = new compte(102, "Bank A", "Country A", "USD");
-        compte account3 = new compte(103, "Bank B", "Country B", "EUR");
+        // Create clients
+        client client1 = new client(101, "John", "Doe", "123 Avenue", "john.doe@example.com", "123456789");
+        client client2 = new client(102, "Jane", "Smith", "456 Street", "jane.smith@example.com", "987654321");
 
-        // Creation de clients
-        client client1 = new client(1, "Alice", "Smith","marrackech","ayougil@gmail.com","060778489");
-        client client2 = new client(2, "AYOUGIL", "Zakariae","marrackech","zakaria@gmail.com","060668489");
-
-        // gerer les clients
-        gerer_client clientManager = new gerer_client();
+        // Create accounts for each client and add them to the bank
+        compte compte1 = new compte(1001, "France", myBank, "EUR");
+        compte compte2 = new compte(1002, "France", myBank, "USD");
         
-        // ajout de clients
-        clientManager.ajoutClient(client1); // il faut afficher client ajoutee
-        clientManager.ajoutClient(client2); // il faut afficher client ajoutee
-        clientManager.ajoutClient(client1); // client Alice deja existe
-        System.out.println(clientManager.getlist());
-        // recherche de clients 
-        clientManager.recherche_client(client1); // il faut trouver le client Alice
-        clientManager.recherche_client(new client(3, "Charlie", "Brown","marrackech","ayougil@gmail.com","0646689")); // il ne faut pas le trouver
 
-        // creation de compte
-        client1.creationCompte(account1); // il faut afficher compte cree avec succes
-        client1.creationCompte(account1); // il faut afficher compte deja existe
-        client1.creationCompte(account2); // il faut afficher compte cree avec succes
+        client1.creationCompte(compte1);  // Add compte1 to client1
+        client2.creationCompte(compte2);  // Add compte2 to client2
 
-        // recherche du compte
-        client1.recherche_comp(account1); // il faut trouver le compte
-        client1.recherche_comp(account3); // il ne faut pas le trouve
+        // Add accounts to the bank
+        myBank.setListc(List.of(compte1, compte2));
 
-        // Creation de transactions
-        transaction transaction1 = new transaction("TXN001", account1, account2); // VIRIN
-        transaction transaction2 = new transaction("TXN002", account1, account3); // VIRMULTA
-        transaction transaction3 = new transaction("TXN003", account2, account3); // VIRMULTA
-        // ajout de transactions
-        account1.ajoutTrans(transaction1); // ajout avec succes
-        account1.ajoutTrans(transaction1); // affiche transaction ref deja existe
-        account1.ajoutTrans(transaction2); // ajout avec succes
+        // Display clients' information
+        System.out.println("Client 1 Info:");
+        System.out.println(client1);
+        System.out.println("JSON Representation:");
+      System.out.println(client1.toJson());
 
-        // recherche de transactions
-        account1.recherche_trans(transaction1); // il faut trouver la transaction
-        account1.recherche_trans(transaction3); // il ne faut pas trouver la transaction
+        System.out.println("\nClient 2 Info:");
+        System.out.println(client2);
+        System.out.println("JSON Representation:");
+        System.out.println(client2.toJson());
 
-        // affiche les details du compte et transactions
-        System.out.println("Account 1 transactions:");
-        for (transaction t : account1.getListe()) {
-            System.out.println("Transaction Reference: " + t.getReference() + ", Type: " + t.getType());
-        }//affiche les transactions de TXN001 et TXN002
+        // Create a manager for clients
+        gerer_client clientManager = new gerer_client();
+        clientManager.ajoutClient(client1);
+        clientManager.ajoutClient(client2);
 
-        System.out.println("Account 2 transactions:");
-        for (transaction t : account2.getListe()) {
-            System.out.println("Transaction Reference: " + t.getReference() + ", Type: " + t.getType());
-        }//affiche le compte seulement comme aucune transactions n'est ajoute
+        // Create a transaction and add it to the account
+        List<compte> transactionAccounts = new ArrayList<>();
+        transactionAccounts.add(compte2);  // Transfer from compte1 to compte2
+        transaction trans1 = new transaction("TX123", compte1, transactionAccounts, false);
+
+        // Add the transaction to the account
+        compte1.ajoutTrans(trans1);
+
+        // Display the transaction details
+        System.out.println("\nTransaction Info:");
+        System.out.println(trans1);
+        System.out.println("JSON Representation:");
+      System.out.println(trans1.toJson());
+
+        // Test search functionality in gerer_client
+        System.out.println("\nSearching for Client 1:");
+        clientManager.recherche_client(client1);
+
+        System.out.println("\nSearching for a non-existent client:");
+        clientManager.recherche_client(new client(999, "Ghost", "Client", "Unknown", "ghost@example.com", "000000000"));
+
+        // Display all clients managed by gerer_client
+        System.out.println("\nAll Clients:");
+        for (client c : clientManager.getlist()) {
+            System.out.println(c);
+        }
     }
-	
-
 }
