@@ -36,5 +36,17 @@ public class gerer_client {
 	public List<client> getlist(){
 		return listc;
 	}
+	
+	public client recherche_client_parnum(int num) {
+        
+        for (client cl : listc) {
+            if (cl.getNumCli() == num) {
+                System.out.println("le client est bien trouve " + cl);
+                return cl;
+            }
+        }
+        return null;
+       
+    }
   
 }
