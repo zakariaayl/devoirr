@@ -111,5 +111,6 @@ public void test_client() {
 	Assert.assertEquals(true,clientManager.recherche_client(client1));
 
 }
+//on peut ajouter des autres test
 
 }
