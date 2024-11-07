@@ -38,13 +38,13 @@ public class transaction {
 		  this.trans_type=type.VIRCHAK;
 	  }
 	  
-      if(comptes.size()!=1) this.trans_type=type.VIRMULTA;
+      if(comptes.size()!=1) this.trans_type=type.VIRMULTA;//plusieurs comptes
       else {
     	  if(c1.getbanque().getId() == comptes.get(0).getbanque().getId() && c1.getbanque().getPays().equals(comptes.get(0).getbanque().getPays())) {
-    		  this.trans_type=type.VIRIN;
+    		  this.trans_type=type.VIRIN;//meme banque meme pays
     	  }
     	  if(!c1.getDevise().equals(comptes.get(0).getDevise())) {
-    		  this.trans_type=type.VIRCKA;
+    		  this.trans_type=type.VIRCKA;//different devise
     	  }
     	  
       }
