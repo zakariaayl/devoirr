@@ -92,5 +92,15 @@ client(int num,String nom,String pre,String adresse,String email,String phone){
                .create();
        return gson.toJson(this);
    }
+    public compte recherche_compte_parnum(int num) {
+       for (compte cl : liste) {
+           if (cl.getNumCom() == num) {
+               System.out.println("le client est bien trouve " + cl);
+               return cl;
+           }
+       }
+       return null;
+      
+   }
 	  
 }
