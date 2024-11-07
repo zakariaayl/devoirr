@@ -118,6 +118,6 @@ public void test_client() {
 	Assert.assertEquals(true,clientManager.recherche_client(client1));
 
 }
-//on peut ajouter des autres test
+//on peut ajouter des autres test sur le recherche de compte et clients et transaction just par numero
 
 }
