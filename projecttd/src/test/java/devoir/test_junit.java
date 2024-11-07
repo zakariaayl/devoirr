@@ -1,8 +1,15 @@
+package devoir;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import devoir.banque;
+import devoir.client;
+import devoir.compte;
+import devoir.gerer_client;
+import devoir.transaction;
 public class test_junit {
 @Test
 public void test_compte() {

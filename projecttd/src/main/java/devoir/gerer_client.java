@@ -1,3 +1,4 @@
+package devoir;
 import java.util.ArrayList;
 import java.util.List;
 //on peut pas creer ces methodes dans banque car la banque n'est pas liee directement a client ,alors qu'on doit creer une list de clients
